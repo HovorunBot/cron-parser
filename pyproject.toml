@@ -1,0 +1,101 @@
+[project]
+name = "cron-parser"
+version = "0.0.0a1"
+description = "Small parser of cron expressions."
+readme = "README.md"
+authors = [
+    { name = "TwilightSparkle42", email = "jaden.corr42@gmail.com" }
+]
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+keywords = ["cron", "parser", "scheduling"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+    "mypy>=1.18.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/HovorunBot/cron-parser"
+Repository = "https://github.com/HovorunBot/cron-parser"
+Issues = "https://github.com/HovorunBot/cron-parser/issues"
+
+[build-system]
+requires = ["uv_build>=0.9.7,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.18.2",
+    "ruff>=0.14.3",
+]
+test = [
+    "pytest>=8.4.2",
+]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+namespace_packages = true
+show_error_codes = true
+pretty = true
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]          # apply only to tests/*
+disallow_untyped_defs = false
+disallow_untyped_calls = false
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+# Enable all rule categories, then selectively ignore ones you truly don't want later
+lint.select = ["ALL"]
+# Some rules are noisy or overlap with MyPy / style preferences
+lint.ignore = [
+    "D203",    # one-blank-line-before-class (conflicts with D211)
+    "D213",    # multi-line-summary-second-line
+    "E501",    # line length handled by formatter
+    "TD003",   # missing issue link in TODO
+    "COM812",  # missing trailing comma (handled by formatter)
+    "ANN401", # Any as a kwargs argument
+    "TD002", # Missing author in TODO
+    "FIX002", # Line contains TODO
+    "S101", # asser are used not for logic, but ensuring incorrect code usage presented
+]
+# Optional: set per-file ignores for tests
+lint.per-file-ignores = { "tests/**" = ["S101", "PLR2004"] }
+
+# Fix mode (useful if you run `ruff check --fix`)
+fix = true
+
+[tool.ruff.format]
+# Use Ruff’s built-in formatter (Black-compatible)
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+docstring-code-format = true
+
+[tool.ruff.lint.isort]
+known-first-party = ["tlo"]
+combine-as-imports = true
+force-sort-within-sections = true
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+[tool.uv]
+package = true
+default-groups = "all"
+
+[tool.uv.build-backend]
+source-exclude = ["tests/**"]
+wheel-exclude = ["tests/**"]
